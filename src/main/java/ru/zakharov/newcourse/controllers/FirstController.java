@@ -14,6 +14,9 @@ import ru.zakharov.newcourse.repos.UserRepo;
 
 import javax.validation.Valid;
 import java.util.Collections;
+import java.util.Comparator;
+import java.util.List;
+import java.util.stream.Collectors;
 
 @Controller
 public class FirstController {
@@ -46,6 +49,10 @@ public class FirstController {
             currentUser.getDictionaries().forEach(s-> System.out.println(s.getDescription().getDescription()));
         }
         System.out.println("=================================================================================");
+        List<User> allUsers = userRepo.findAll().stream()
+                .sorted(Comparator.comparing(User::countOfAllWords, Comparator.reverseOrder()))
+                .collect(Collectors.toList());
+        model.addAttribute("allUsers", allUsers);
         model.addAttribute("currentUser", currentUser);
         return "home";
     }

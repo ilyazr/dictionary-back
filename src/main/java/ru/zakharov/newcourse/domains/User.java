@@ -14,6 +14,7 @@ import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
 import java.util.Set;
+import java.util.stream.IntStream;
 
 @Entity
 @Table(name = "users")
@@ -66,6 +67,14 @@ public class User implements UserDetails {
         this.username = username;
         this.password = password;
         this.email = email;
+    }
+
+    public int countOfAllWords() {
+        return getDictionaries().stream()
+                .map(dict->dict.getWords())
+                .map(words->words.size())
+                .flatMapToInt(size->IntStream.of(size))
+                .sum();
     }
 
     public List<Dictionary> getDictionaries() {

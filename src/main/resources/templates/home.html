@@ -42,5 +42,14 @@
         </tr>
     </table>
 </th:block>
+<p>Список пользователей:</p>
+<ul th:each="user : ${allUsers}">
+    <li th:if="${currentUser != user}">
+        <a th:href="@{'/dict/show/'+${user.getId()}}">
+            <p th:text="${user.getUsername()}+'. Общее кол-во слов: '
+            +${user.countOfAllWords()}+'. Кол-во словарей: '+${user.getDictionaries().size()}"></p>
+        </a>
+    </li>
+</ul>
 </body>
 </html>

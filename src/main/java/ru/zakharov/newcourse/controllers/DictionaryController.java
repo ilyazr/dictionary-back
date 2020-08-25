@@ -62,7 +62,6 @@ public class DictionaryController {
         currentUser.addDictionary(dictionary);
         dictionaryRepo.save(dictionary);
         descriptionRepo.save(description1);
-
         return "redirect:/homepage";
     }
 
@@ -70,6 +69,19 @@ public class DictionaryController {
     public String openDictionary(@PathVariable int id, Model model) {
         Dictionary dictionary = dictionaryRepo.findById(id).get();
         List<Words> dictionaryWords = dictionary.getWords();
+        model.addAttribute("currentDictionary", dictionary);
+        return "dictionary";
+    }
+
+    @GetMapping("/open/foreign/{id}")
+    public String openForeignDictionary(@PathVariable int id, Model model,
+                                        @AuthenticationPrincipal User user) {
+        Dictionary dictionary = dictionaryRepo.findById(id).get();
+        List<Words> dictionaryWords = dictionary.getWords();
+        User owner = userRepo.findUserById(dictionary.getUser().getId());
+        User currentUser = userRepo.findUserById(user.getId());
+        model.addAttribute("currentUser", currentUser);
+        model.addAttribute("owner", owner);
         model.addAttribute("currentDictionary", dictionary);
         return "dictionary";
     }
@@ -124,6 +136,15 @@ public class DictionaryController {
         Dictionary currentDictionary = dictionaryRepo.findById(id).get();
         dictionaryRepo.delete(currentDictionary);
         return "redirect:/homepage";
+    }
+
+    @GetMapping("/show/{id}")
+    public String showUserDictionary(@PathVariable int id, Model model) {
+        User user = userRepo.findUserById(id);
+        List<Dictionary> dictionaries = user.getDictionaries();
+        model.addAttribute("owner", user);
+        model.addAttribute("dictionaries", dictionaries);
+        return "usersdictionaries";
     }
 
 }
