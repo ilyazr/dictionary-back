@@ -1,0 +1,14 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="https://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Add dictionary!</title>
+</head>
+<body>
+<form th:action="@{/dict/add}" method="post">
+    <p><input type="text" name="name" placeholder="Название словаря"></p>
+    <p><textarea rows="10" cols="45" name="description" placeholder="Описание словаря"></textarea></p>
+    <p><input type="submit" value="Создать"></p>
+</form>
+</body>
+</html>

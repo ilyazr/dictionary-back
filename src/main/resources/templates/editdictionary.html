@@ -1,0 +1,27 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="https://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Edit dictionary</title>
+</head>
+<body>
+<h1 th:text="'Редактируем словарь '+${currentDictionary.getDictionaryName()}"></h1>
+<form th:action="@{'/dict/edit/'+${currentDictionary.getId()}}" method="post">
+    <table cellspacing="2" border="1" cellpadding="5">
+        <tr style="font-weight: bold">
+            <td>Название</td>
+            <td>Описание</td>
+        </tr>
+        <tr>
+            <td th:text="${currentDictionary.getDictionaryName()}"></td>
+            <td th:text="${currentDictionary.getDescription().getDescription()}"></td>
+        </tr>
+        <tr>
+            <td><input type="text" name="name" placeholder="Новое имя"></td>
+            <td><textarea rows="10" cols="45" name="description" placeholder="Новое описание словаря"></textarea></td>
+        </tr>
+    </table>
+    <input type="submit" value="Изменить">
+</form>
+</body>
+</html>

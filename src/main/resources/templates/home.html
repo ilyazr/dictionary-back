@@ -1,0 +1,46 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="https://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Home</title>
+</head>
+<body>
+<form th:action="@{/logout}" method="post">
+    <input type="submit" value="Выйти"/>
+</form>
+<h1>Home page</h1>
+<p th:text="'Hello, '+${currentUser.username}+'!'"></p>
+<button>
+    <a th:href="@{/dict/add}">Создать словарь!</a>
+</button>
+<th:block th:if="${#lists.isEmpty(currentUser.getDictionaries())}">
+    <p th:text="'У вас нет словарей!'"></p>
+</th:block>
+<br><br>
+<th:block th:if="${not #lists.isEmpty(currentUser.getDictionaries())}">
+    <p> Ваши словари:</p>
+    <table cellspacing="2" border="1" cellpadding="5">
+        <tr style="font-weight: bold">
+            <td>Название</td>
+            <td>Количество слов</td>
+            <td>Описание</td>
+            <td>Дата создания</td>
+            <td>Последнее обновление</td>
+            <td>Открыть словарь</td>
+            <td>Редактировать словарь</td>
+            <td>Удалить словарь</td>
+        </tr>
+        <tr th:each="dict : ${currentUser.getDictionaries()}">
+            <td th:text="${dict.dictionaryName}"></td>
+            <td th:text="${dict.getWords().size()}"></td>
+            <td th:text="${dict.getDescription().getDescription()}"></td>
+            <td th:text="${dict.getCreateDate().getTime()}"></td>
+            <td th:text="${dict.getUpdateDate().getTime()}"></td>
+            <td><a th:href="@{'/dict/open/'+${dict.id}}">Открыть словарь</a></td>
+            <td><a th:href="@{'/dict/edit/'+${dict.id}}">Редактировать</a></td>
+            <td><a th:href="@{'/dict/del/'+${dict.id}}">Удалить</a></td>
+        </tr>
+    </table>
+</th:block>
+</body>
+</html>

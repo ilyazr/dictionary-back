@@ -1,0 +1,20 @@
+<!DOCTYPE HTML>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <title>Home Page</title>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+</head>
+<body>
+<p th:text="'Hello, ' + ${name} + '!'" ></p>
+<span>
+    <button>
+        <a th:href="@{/login}">Войти</a>
+    </button>
+</span>
+<span>
+    <button>
+        <a th:href="@{/registration}">Регистрация</a>
+    </button>
+</span>
+</body>
+</html>

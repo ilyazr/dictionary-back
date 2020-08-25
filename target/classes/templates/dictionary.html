@@ -1,0 +1,24 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="https://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Dictionary</title>
+</head>
+<body>
+<h1 th:text="${currentDictionary.getDictionaryName()}"></h1>
+<p th:text="'В словаре нет слов!'" th:if="${#lists.isEmpty(currentDictionary.getWords())}"></p>
+<form th:action="@{'/dict/add-word/'+${currentDictionary.getId()}}" method="get">
+    <input type="submit" value="Добавить слово"/>
+</form>
+<table th:if="${not #lists.isEmpty(currentDictionary.getWords())}" cellspacing="2" border="1" cellpadding="5">
+    <tr style="font-weight: bold">
+        <td>Слово</td>
+        <td>Перевод</td>
+    </tr>
+    <tr th:each="word : ${currentDictionary.getWords()}">
+        <td th:text="${word.getWord()}"></td>
+        <td th:text="${word.getTranslate()}"></td>
+    </tr>
+</table>
+</body>
+</html>

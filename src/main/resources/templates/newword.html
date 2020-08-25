@@ -1,0 +1,14 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="https://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>New word</title>
+</head>
+<h1 th:text="'Добавляем новое слово в словарь '+${currentDictionary.getDictionaryName()}"></h1>
+<form th:action="@{'/dict/add-word/'+${currentDictionary.getId()}}" method="post">
+    <input type="text" name="word" placeholder="Введите слово" />
+    <input type="text" name="translate" placeholder="Введите перевод" />
+    <input type="submit" value="Добавить" />
+</form>
+</body>
+</html>
