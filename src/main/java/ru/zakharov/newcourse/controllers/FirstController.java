@@ -67,9 +67,8 @@ public class FirstController {
                 .createNativeQuery("SELECT word FROM words GROUP BY word ORDER BY COUNT (*) DESC LIMIT 3");
         List resultOfQuery = query.getResultList();
         Map<String, BigInteger> top3Words = new LinkedHashMap<>();
-        Query q;
+        Query q = entityManager.createNativeQuery("SELECT count(*) FROM words WHERE word = ? GROUP BY word");
         for (int i = 0; i < resultOfQuery.size(); i++) {
-            q = entityManager.createNativeQuery("SELECT count(*) FROM words WHERE word = ? GROUP BY word");
             q.setParameter(1, resultOfQuery.get(i));
             top3Words.put((String) resultOfQuery.get(i), (BigInteger) q.getSingleResult());
         }
