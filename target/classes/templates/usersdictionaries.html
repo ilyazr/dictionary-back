@@ -1,0 +1,34 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="https://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>User's dictionaries</title>
+</head>
+<body>
+<h1 th:text="'Dictionaries of '+${owner.getUsername()}"></h1>
+<th:block th:if="${#lists.isEmpty(owner.getDictionaries())}">
+    <p th:text="'У '+${owner.getUsername()}+' нет словарей!'"></p>
+</th:block>
+<br><br>
+<th:block th:if="${not #lists.isEmpty(dictionaries)}">
+    <table cellspacing="2" border="1" cellpadding="5">
+        <tr style="font-weight: bold">
+            <td>Название</td>
+            <td>Количество слов</td>
+            <td>Описание</td>
+            <td>Дата создания</td>
+            <td>Последнее обновление</td>
+            <td>Открыть словарь</td>
+        </tr>
+        <tr th:each="dict : ${dictionaries}">
+            <td th:text="${dict.dictionaryName}"></td>
+            <td th:text="${dict.getWords().size()}"></td>
+            <td th:text="${dict.getDescription().getDescription()}"></td>
+            <td th:text="${dict.getCreateDate().getTime()}"></td>
+            <td th:text="${dict.getUpdateDate().getTime()}"></td>
+            <td><a th:href="@{'/dict/open/foreign/'+${dict.id}}">Открыть словарь</a></td>
+        </tr>
+    </table>
+</th:block>
+</body>
+</html>

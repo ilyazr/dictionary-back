@@ -10,12 +10,16 @@ import org.springframework.web.bind.WebDataBinder;
 import org.springframework.web.bind.annotation.*;
 import ru.zakharov.newcourse.Role;
 import ru.zakharov.newcourse.domains.User;
+import ru.zakharov.newcourse.domains.Words;
+import ru.zakharov.newcourse.repos.DictionaryRepo;
 import ru.zakharov.newcourse.repos.UserRepo;
+import ru.zakharov.newcourse.repos.WordsRepo;
 
+import javax.persistence.EntityManager;
+import javax.persistence.Query;
 import javax.validation.Valid;
-import java.util.Collections;
-import java.util.Comparator;
-import java.util.List;
+import java.math.BigInteger;
+import java.util.*;
 import java.util.stream.Collectors;
 
 @Controller
@@ -23,6 +27,12 @@ public class FirstController {
 
     @Autowired
     private UserRepo userRepo;
+
+    @Autowired
+    private WordsRepo wordsRepo;
+
+    @Autowired
+    private EntityManager entityManager;
 
     @InitBinder
     public void initBinder(WebDataBinder binder) {
@@ -52,6 +62,23 @@ public class FirstController {
         List<User> allUsers = userRepo.findAll().stream()
                 .sorted(Comparator.comparing(User::countOfAllWords, Comparator.reverseOrder()))
                 .collect(Collectors.toList());
+
+        Query query = entityManager
+                .createNativeQuery("SELECT word FROM words GROUP BY word ORDER BY COUNT (*) DESC LIMIT 3");
+        List resultOfQuery = query.getResultList();
+        Map<String, BigInteger> top3Words = new LinkedHashMap<>();
+        Query q;
+        for (int i = 0; i < resultOfQuery.size(); i++) {
+            q = entityManager.createNativeQuery("SELECT count(*) FROM words WHERE word = ? GROUP BY word");
+            q.setParameter(1, resultOfQuery.get(i));
+            top3Words.put((String) resultOfQuery.get(i), (BigInteger) q.getSingleResult());
+        }
+        top3Words.entrySet()
+                .forEach(pair-> System.out.println(pair.getKey()+" - "+pair.getValue()));
+        System.out.println(top3Words);
+        if (resultOfQuery!=null) {
+            model.addAttribute("top3words", top3Words);
+        }
         model.addAttribute("allUsers", allUsers);
         model.addAttribute("currentUser", currentUser);
         return "home";

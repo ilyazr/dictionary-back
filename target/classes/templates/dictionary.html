@@ -8,7 +8,7 @@
 <h1 th:text="${currentDictionary.getDictionaryName()}"></h1>
 <p th:text="'В словаре нет слов!'" th:if="${#lists.isEmpty(currentDictionary.getWords())}"></p>
 <form th:action="@{'/dict/add-word/'+${currentDictionary.getId()}}"
-      th:if="${currentUser.getId() == owner.getId()}"
+      th:if="${owner==true}"
       method="get">
     <input type="submit" value="Добавить слово"/>
 </form>

@@ -70,6 +70,7 @@ public class DictionaryController {
         Dictionary dictionary = dictionaryRepo.findById(id).get();
         List<Words> dictionaryWords = dictionary.getWords();
         model.addAttribute("currentDictionary", dictionary);
+        model.addAttribute("owner", true);
         return "dictionary";
     }
 
@@ -78,10 +79,9 @@ public class DictionaryController {
                                         @AuthenticationPrincipal User user) {
         Dictionary dictionary = dictionaryRepo.findById(id).get();
         List<Words> dictionaryWords = dictionary.getWords();
-        User owner = userRepo.findUserById(dictionary.getUser().getId());
         User currentUser = userRepo.findUserById(user.getId());
         model.addAttribute("currentUser", currentUser);
-        model.addAttribute("owner", owner);
+        model.addAttribute("owner", false);
         model.addAttribute("currentDictionary", dictionary);
         return "dictionary";
     }

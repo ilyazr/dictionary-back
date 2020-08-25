@@ -51,5 +51,9 @@
         </a>
     </li>
 </ul>
+<p>Топ-3 слов:</p>
+<ol>
+    <li th:text="${word.getKey()}+'. Повторений: '+${word.getValue()}" th:each="word : ${top3words}"></li>
+</ol>
 </body>
 </html>
